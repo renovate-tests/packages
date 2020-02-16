@@ -1,0 +1,1 @@
+../../jehon-base-minimal/usr/bin/normalize-movies.sh

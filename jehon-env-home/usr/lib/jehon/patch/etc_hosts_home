@@ -1,0 +1,10 @@
+#
+# File: /etc/hosts
+# Tag: etc_hosts_home
+#
+
+192.168.1.1     bbox
+192.168.1.9     synology
+
+192.168.1.42 	osmc
+192.168.1.36 	kiosk

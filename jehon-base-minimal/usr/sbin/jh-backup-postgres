@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+if [ ! -t 1 ] ; then
+	exec > >(systemd-cat -t "$(realpath "$0")" -p info ) \
+	    2> >(systemd-cat -t "$(realpath "$0")" -p err  )
+fi
+
+ROOT="/var/backups/live"
+
+backupOne() {
+	db="$1"
+
+	# http://stackoverflow.com/a/16783253/1954789
+	if runuser -u postgres psql -lqt | cut -d \| -f 1 | grep -qw "$db"; then
+		echo "[$db] Start backup database"
+		FILE=$(echo "$db" | sed "s/[^[:alnum:]]/_/g")
+		FILE="$ROOT/postgres-$FILE"
+		if [ -r "$FILE.gz" ]; then
+			rm "$FILE.gz"
+		fi
+
+		echo "[$db] vacuum the database"
+		runuser -u postgres vacuumdb -z "$db"
+
+		echo "[$db] Backup the database into $FILE"
+		# --format=c
+		runuser -u postgres pg_dump -x --no-security-labels --blobs "$db" > "$FILE"
+		if [ -r "$FILE" ]; then
+			if [ ! -s "$FILE" ]; then
+				echo "[$db] File is empty ! Removing it"
+				rm "$FILE"
+				return;
+			fi
+			echo "[$db] Compress backup"
+			gzip --no-name "$FILE"
+			echo "[$db] Backup done"
+		else
+			echo "[$db] Backup generate no file"
+		fi
+	else
+		echo "[$db] Database does not exists"
+	fi
+}
+
+# Main
+runuser -u postgres psql -l >/dev/null 2>&1
+RUNNING=$?
+if [ "$RUNNING" != "0" ]; then
+	echo "Postgres is not running - exiting"
+	exit 1
+fi
+mkdir -p "$ROOT"
+
+if [ -z "$2" ]; then
+	# for db in "${monthlyBackups[@]}"; do
+	runuser -u postgres psql -q -l -t | cut -d "|" -f 1 | while read db; do
+		if [ -z "$db" ]; then return; fi
+		if [ "$db" = "test" ]; then return; fi
+		if [ "$db" = "template0" ]; then return; fi
+		if [ "$db" = "template1" ]; then return; fi
+
+		backupOne "$db"
+	done
+else
+	# Backup only $2
+	backupOne "$2"
+fi

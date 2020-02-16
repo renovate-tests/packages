@@ -1,0 +1,124 @@
+#!/bin/sh
+#
+# see: dh_installdeb(1)
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <postinst> `abort-remove'
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+
+if [ -e "/usr/share/debconf/confmodule" ]; then
+	# export DEBCONF_DEBUG=developer
+
+	# http://www.fifi.org/doc/debconf-doc/tutorial.html
+	# shellcheck disable=SC1091
+	. /usr/share/debconf/confmodule
+fi
+
+apply_special() {
+	if [ -x /usr/sbin/jehon-apply-special ]; then
+		/usr/sbin/jehon-apply-special
+
+		# Only if ssh is installed:
+		if systemctl list-units --full -all | grep -Fq "ssh.service"; then
+	   		service ssh restart
+		fi
+	fi
+}
+
+configureUserJehon() {
+	# Do we have a password?
+	db_get jehon/jehon_password
+	if [ "$RES" = "" ]; then
+
+		db_input critical jehon/jehon_password || true
+		db_go
+
+		db_get jehon/jehon_password
+		PASSWD="$RET"
+		if [ "$PWD" != "" ]; then
+			echo "Setting the password of account jehon"
+			echo "jehon:$PASSWD" | chpasswd
+			echo "Setting the samba passord of account jehon"
+			echo -ne "$PASSWD\n$PASSWD\n" | smbpasswd -s -a jehon > /dev/null
+		else
+			echo "Bypassing setting the password of account jehon"
+		fi
+	fi
+
+	if getent group "sudo" > /dev/null; then
+		usermod -a -G "sudo" "jehon" || true
+	fi
+
+    # Fix ssh rights
+	if [ -r /home/jehon/.ssh ]; then
+    	chown jehon.jehon -R /home/jehon/.ssh
+		chmod go-w -R /home/jehon/.ssh
+		if [ -r /home/jehon/.ssh/id_rsa ]; then
+			chmod 400 /home/jehon/.ssh/id_rsa
+		fi
+		if [ -r /home/jehon/.ssh/id_rsa.pub ]; then
+			chmod 400 /home/jehon/.ssh/id_rsa.pub
+		fi
+	fi
+}
+
+case "$1" in
+	configure)
+		# Create user jehon if it does not exists
+		if ! id -u jehon >/dev/null 2>&1; then
+			U1000GRPS=$(id -Gn 1000 | sed -e 's/ /,/g' )
+			
+			useradd --groups "$U1000GRPS" jehon || true
+
+		 	if [ -x /bin/bash ]; then
+				usermod -s /bin/bash jehon
+			fi
+		fi
+
+		groupadd -f docker || true
+    	usermod -a -G "docker" "jehon" || true
+
+		configureUserJehon	
+
+		apply_special
+
+		# Add node source
+		echo "deb https://deb.nodesource.com/node_13.x $( lsb_release -s -c ) main" > /etc/apt/sources.list.d/nodesource.list
+
+		mkdir -p /etc/jehon/restricted/
+		chmod 500 /etc/jehon/restricted
+		
+		if [ -r /etc/jehon/restricted/backup_computer ]; then
+			mv /etc/jehon/restricted/backup_computer /etc/jehon/restricted/synology_auto
+			sed "s/backup_auto/synology_auto/" -i /etc/jehon/restricted/synology_auto
+		fi
+
+		if [ ! -r /etc/jehon/restricted/synology_auto ]; then
+			echo "!!! Generate a backup key in /etc/jehon/restricted/synology_auto"
+		fi
+    	;;
+
+	triggered)
+		apply_special
+		configureUserJehon
+		;;
+
+	abort-upgrade|abort-remove|abort-deconfigure)
+	    ;;
+
+	*)
+	    echo "postinst called with unknown argument \`$1'" >&2
+	    exit 1
+	    ;;
+esac
+
+exit 0

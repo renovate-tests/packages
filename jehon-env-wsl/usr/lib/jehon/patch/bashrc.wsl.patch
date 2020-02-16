@@ -1,0 +1,9 @@
+#
+# File: /home/jehon/.bashrc
+# Tag: wsl
+#
+
+# Export display to windows
+export DISPLAY=:0
+
+export PATH=~/Documents/src/packages/bin_wsl_2_win/":$PATH"
