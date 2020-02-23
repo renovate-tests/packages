@@ -32,7 +32,8 @@ function start() {
 			echo "erreur in encfs: $?" >&2
 			exit 255
 		fi
-		backupSecurity
+		echo "Launching backup security in the background"
+		backupSecurity &
 	fi
 	echo "Started!"
 }
