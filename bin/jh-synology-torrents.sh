@@ -2,7 +2,7 @@
 
 REMOTE_UPLOAD_TORRENT_FILES="/volume3/temporary/torrents/"
 REMOTE_DOWNLOADED_FILES="/var/services/homes/admin/downloaded/"
-LOCAL_DOWNLOADED="/home/jehon/Desktop/downloaded/"
+LOCAL_DOWNLOADED="/home/jehon/Downloads/"
 
 jh-rsync.sh /home/jehon/Downloads/ "synology:$REMOTE_UPLOAD_TORRENT_FILES" \
 	"--rsync-path=/bin/rsync" \
