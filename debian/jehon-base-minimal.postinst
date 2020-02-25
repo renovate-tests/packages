@@ -103,7 +103,10 @@ case "$1" in
 		fi
 
 		if [ ! -r /etc/jehon/restricted/synology_auto ]; then
-			echo "!!! Generate a backup key in /etc/jehon/restricted/synology_auto"
+			ssh-keygen -N "" -C "synology_auto@$(hostname)" -f /etc/jehon/restricted/synology_auto
+			cat /etc/jehon/restricted/synology_auto.pub
+			#echo "!!! Generate a backup key in /etc/jehon/restricted/synology_auto"
+			ech "!! Store the public key into synology backup"
 		fi
     	;;
 
