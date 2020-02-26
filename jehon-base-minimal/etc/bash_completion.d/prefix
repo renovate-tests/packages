@@ -1,7 +1,0 @@
-# We use the sudo system directly...
-
-. /usr/share/bash-completion/completions/sudo
-
-complete -F _sudo entr
-complete -F _sudo jh-clear
-complete -F _sudo xvfb-run

@@ -1,3 +1,0 @@
-# https://forums.opensuse.org/showthread.php/522805
-
-SUBSYSTEMS=="usb", ATTRS{idVendor}=="0b33", MODE:="660", GROUP="input" 
