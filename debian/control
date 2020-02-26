@@ -1,0 +1,136 @@
+Source: jehon-debs
+Section: unknown
+Priority: extra
+Maintainer: Jean Honlet <marielineet.jean@gmail.com>
+Build-Depends: debhelper (>= 10)
+Standards-Version: 4.1.2
+Homepage: http://www.bitbucket.org/jehon/packages/
+Vcs-Git: git@bitbucket.org:jehon/packages.git
+Vcs-Browser: https://bitbucket.org/jehon/packages/
+
+
+##########################
+#
+# Base
+#
+##########################
+
+Package: jehon-base-minimal
+Architecture: all
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends},
+	debconf, sed,
+	bash,
+	sudo,
+	sshpass,
+	lsb-release,
+	debfoster,
+	ntp,
+	openssh-server, openssh-client,
+	nmap,
+	parted,
+	screen,
+	multitail,
+	less,
+	fdupes,
+	cifs-utils,
+	htop,
+	libexiv2-dev, exiftran,
+	python-pkg-resources,
+	jq,
+	samba,
+	lftp,
+	entr,
+	gstreamer1.0-plugins-bad, gstreamer1.0-plugins-ugly,
+	exif, libimage-exiftool-perl,
+	gnupg2, dirmngr
+Description: Jehon minimal hooks
+
+
+Package: jehon-base-snap
+Architecture: all
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}
+	jehon-base-minimal,
+	snapd
+Description: snap list
+
+##########################
+#
+# Env
+#
+##########################
+
+
+Package: jehon-env-home
+Architecture: all
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}
+	jehon-base-minimal,
+	rsync
+Description: Jehon environnement
+
+
+Package: jehon-env-dev
+Architecture: all
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}
+	jehon-base-minimal,
+	git-buildpackage,
+	binutils-arm-linux-gnueabihf,
+	debhelper,
+	git, git-cola,
+	xvfb, libgtk2.0-0, libnotify-dev, libgconf-2-4, libnss3, libxss1, libasound2
+Description: Jehon environnement
+
+
+Package: jehon-env-wsl
+Architecture: all
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}
+	jehon-base-minimal
+Description: Jehon environnement
+
+
+Package: jehon-env-desktop
+Architecture: all
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}
+	jehon-base-minimal,
+	jehon-base-snap,
+	xclip,
+	gparted,
+	pdfsam,
+	activity-log-manager,
+	terminator,
+	xtermcontrol,
+	meld,
+	exfat-fuse, exfat-utils,
+	xprintidle
+Description: Jehon environnement
+
+##########################
+#
+# system's
+#
+##########################
+
+Package: jehon-system-private
+Architecture: all
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}
+    jehon-env-home,
+	jehon-env-dev,
+	jehon-env-desktop,
+	rar,unrar,
+	encfs
+Description: Jehon environnement
+
+
+Package: jehon-system-tv
+Architecture: all
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}
+	jehon-env-home,
+	build-essential, rbp-userland-dev-osmc, libvncserver-dev, libconfig++-dev,
+Description: Jehon environnement

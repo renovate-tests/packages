@@ -1,0 +1,7 @@
+#
+# File: /etc/screenrc
+#
+
+hardstatus alwayslastline
+# termcapinfo xterm* ti@:te@
+defscrollback 10000

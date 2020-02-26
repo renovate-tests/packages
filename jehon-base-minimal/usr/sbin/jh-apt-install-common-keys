@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+if [[ "$( id -u )" != "0" ]]; then
+    echo "You need to be root to do this" >&2
+    exit 1
+fi
+
+# Nodejs key
+/usr/sbin/jh-apt-add-key "1655A0AB68576280"
+
+# Chrome (ubuntu)
+/usr/sbin/jh-apt-add-key "1397BC53640DB551"
+
+# Chrome (raspberrypi)
+/usr/sbin/jh-apt-add-key "78BD65473CB3BD13"
+
+# # Docker
+# /usr/sbin/jh-apt-add-key "7EA0A9C3F273FCD8"

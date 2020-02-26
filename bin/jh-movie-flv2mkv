@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+	echo "flv source(1)" "$1"
+	exit 255
+fi
+
+ffmpeg -i "$1" -f matroska -vcodec copy -acodec copy "$1".mkv

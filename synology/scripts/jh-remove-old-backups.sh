@@ -1,0 +1,1 @@
+../../jehon-base-minimal/usr/share/jehon-base-minimal/jh-remove-old-backups.sh

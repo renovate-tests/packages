@@ -1,0 +1,36 @@
+<sources>
+    <video>
+        <default pathversion="1"></default>
+        <source>
+            <name>Auto-mounted drives</name>
+            <path pathversion="1">/media/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>videos (synology)</name>
+            <path>smb://osmc:QUdaizeor124@192.168.1.9/video/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>transfert (synology)</name>
+            <path>smb://osmc:QUdaizeor124@192.168.1.9/transferts/videos/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+    </video>
+    <music>
+        <default pathversion="1"></default>
+        <source>
+            <name>Auto-mounted drives</name>
+            <path pathversion="1">/media/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>music (synology)</name>
+            <path>smb://osmc:QUdaizeor124@192.168.1.9/music/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+    </music>
+    <files>
+        <default pathversion="1"></default>
+    </files>
+</sources>

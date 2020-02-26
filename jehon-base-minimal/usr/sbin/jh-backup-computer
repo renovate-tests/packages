@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+if [ ! -t 1 ] ; then
+	exec > >(systemd-cat -t "$(realpath "$0")" -p info ) \
+	    2> >(systemd-cat -t "$(realpath "$0")" -p err  )
+fi
+
+REMOTE_ROOT=/volume3/Backups/$(hostname)
+REMOTE_BACKUP=/volume3/transferts/auto/$(hostname)
+
+KEY="/etc/jehon/restricted/synology_auto"
+if [ -r "$KEY" ]; then
+	/usr/bin/jh-rsync-backup.sh \
+		/ root@synology:/synology/backup \
+		-e "ssh -i $KEY" \
+		--filter ". /etc/jh-rsync-backup-computer-filter" \
+
+else
+	echo "No $KEY found, no backup will run" >&2
+	exit 1
+fi
