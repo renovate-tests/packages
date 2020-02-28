@@ -1,15 +1,15 @@
 Package: jehon-base-minimal
 Source: jehon-debs
-Version: 1.3.0ubuntu6~13.gbpc35a64
+Version: 1.3.0ubuntu6~13.gbpdd4ec7
 Architecture: all
 Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 98
 Depends: debconf (>= 0.5) | debconf-2.0, debconf, sed, bash, sudo, sshpass, lsb-release, debfoster, ntp, openssh-server, openssh-client, nmap, parted, screen, multitail, less, fdupes, cifs-utils, htop, libexiv2-dev, exiftran, python-pkg-resources, jq, samba, lftp, entr, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-ugly, exif, libimage-exiftool-perl, gnupg2, dirmngr
-Filename: jehon-base-minimal_1.3.0ubuntu6~13.gbpc35a64_all.deb
-Size: 17924
-MD5sum: 4d3fed19959d2487568b165596c02219
-SHA1: f82dd91245c4fd5c50eb6c29619b594d940d07cd
-SHA256: 4182f6c7ded337485448b1f686c8a80fb408bcab98aa7c405d4e0cc46691327c
+Filename: jehon-base-minimal_1.3.0ubuntu6~13.gbpdd4ec7_all.deb
+Size: 17976
+MD5sum: f9ee9e69335964ab6302cda79398e9af
+SHA1: a4b523f16e40ddaa7958edee006bed0ebc1332d8
+SHA256: 5bcef9ef71d0e757a2cdab3260c2957d06dd4408816d7337269ea2bddb5405be
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -17,16 +17,16 @@ Description: Jehon minimal hooks
 
 Package: jehon-base-snap
 Source: jehon-debs
-Version: 1.3.0ubuntu6~13.gbpc35a64
+Version: 1.3.0ubuntu6~13.gbpdd4ec7
 Architecture: all
 Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 14
 Depends: jehon-base-minimal, snapd
-Filename: jehon-base-snap_1.3.0ubuntu6~13.gbpc35a64_all.deb
-Size: 5004
-MD5sum: b61a5d65ba9ab7898b69e544700e5eb3
-SHA1: 66a0dbacd8fb887cfa8fc7984e79cb1a95bd8222
-SHA256: f48dad3c08dbe71b6217566a07a87712cbcc632879d662ad6e417282e2362c0e
+Filename: jehon-base-snap_1.3.0ubuntu6~13.gbpdd4ec7_all.deb
+Size: 5048
+MD5sum: fb107e61573219ddac183f925d954cca
+SHA1: 8588e97416a1ff4c8a9cbc7583813480e51a1168
+SHA256: 5eeb811fae1708dc75a87ffa49ab5f257cdf9d736881db94cdb3947bcc3e4d0e
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -34,16 +34,16 @@ Description: snap list
 
 Package: jehon-env-desktop
 Source: jehon-debs
-Version: 1.3.0ubuntu6~13.gbpc35a64
+Version: 1.3.0ubuntu6~13.gbpdd4ec7
 Architecture: all
 Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 19
 Depends: jehon-base-minimal, jehon-base-snap, xclip, gparted, pdfsam, activity-log-manager, terminator, xtermcontrol, meld, exfat-fuse, exfat-utils, xprintidle
-Filename: jehon-env-desktop_1.3.0ubuntu6~13.gbpc35a64_all.deb
-Size: 5176
-MD5sum: 39a20ff0451b05053e06ed3060b0398c
-SHA1: 0b76e983cf18923643a56fedb4ec8af92cd31004
-SHA256: 4d3039c99e69e159d9a404ce7bf6fe78ef8937b47ae1538f0f4dd3348e11ba91
+Filename: jehon-env-desktop_1.3.0ubuntu6~13.gbpdd4ec7_all.deb
+Size: 5228
+MD5sum: 656ebab927cb9c611eea4d677aa569af
+SHA1: 56601326005f1469b9d28f78f066cd2e26d1620e
+SHA256: 45db11793b33c7a5dbf4c75f73a218a2080c8db4c78a4153bac387881b26aa77
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -51,16 +51,16 @@ Description: Jehon environnement
 
 Package: jehon-env-dev
 Source: jehon-debs
-Version: 1.3.0ubuntu6~13.gbpc35a64
+Version: 1.3.0ubuntu6~13.gbpdd4ec7
 Architecture: all
 Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 15
 Depends: jehon-base-minimal, git, git-cola, xvfb, libgtk2.0-0, libnotify-dev, libgconf-2-4, libnss3, libxss1, libasound2
-Filename: jehon-env-dev_1.3.0ubuntu6~13.gbpc35a64_all.deb
-Size: 4400
-MD5sum: 11d015fb08e5f5ddb3fac862163ba0ea
-SHA1: 4fbf79e0d09edec18b720bc6dd2caa9840d600f4
-SHA256: e9dd70c39a4a8b4d9753125e840ed87245123308a29d9c4098728ca2c188b12b
+Filename: jehon-env-dev_1.3.0ubuntu6~13.gbpdd4ec7_all.deb
+Size: 4448
+MD5sum: 1d477ac3e0cb4bf0a50527da5830d05d
+SHA1: 4fb0d543576ce5d5a23621fe6011d5d2e80471c8
+SHA256: 6bbc45703b582ba9fb924bb3dee006ffb5564884a634f3f6333782b7ba1d7211
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -68,16 +68,16 @@ Description: Jehon environnement
 
 Package: jehon-env-home
 Source: jehon-debs
-Version: 1.3.0ubuntu6~13.gbpc35a64
+Version: 1.3.0ubuntu6~13.gbpdd4ec7
 Architecture: all
 Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 21
 Depends: jehon-base-minimal, rsync
-Filename: jehon-env-home_1.3.0ubuntu6~13.gbpc35a64_all.deb
-Size: 4920
-MD5sum: 6453d13d59c9c021ecb175336e368e94
-SHA1: 0852382f6b30deb67d42cd399a6aba10f2cae966
-SHA256: 808e572451f3004e690805cb6a0e782b7b574863dea0f0e94205727eb9c8a69b
+Filename: jehon-env-home_1.3.0ubuntu6~13.gbpdd4ec7_all.deb
+Size: 4976
+MD5sum: bda36ec417ae4fc119d1f995a7ae5868
+SHA1: afc4c537020fefb31595ff165833a0a31a23769e
+SHA256: 265e5bf0a03eac063ac790e377a7bb8e679441cefbedd59327d85ed3baf7f4da
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -85,16 +85,16 @@ Description: Jehon environnement
 
 Package: jehon-system-private
 Source: jehon-debs
-Version: 1.3.0ubuntu6~13.gbpc35a64
+Version: 1.3.0ubuntu6~13.gbpdd4ec7
 Architecture: all
 Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 15
 Depends: jehon-env-home, jehon-env-dev, jehon-env-desktop, rar, unrar, encfs
-Filename: jehon-system-private_1.3.0ubuntu6~13.gbpc35a64_all.deb
-Size: 4416
-MD5sum: 4523df52274552f4a433a85e2d924adb
-SHA1: c490767730c596b3ddf4cdbcf70dcb37478f7a33
-SHA256: 793a99d426a77ae3dc919258e6ab1e522cd09e0b4d7810537def81e20a9d4ca3
+Filename: jehon-system-private_1.3.0ubuntu6~13.gbpdd4ec7_all.deb
+Size: 4460
+MD5sum: d06e8047ef09eef7dbf8b0137b85edb8
+SHA1: 73b4d4d5ca1a8290f140fad3f3b8f4b1261b6654
+SHA256: a27122072841a481278d1134614acd44abe40be3cb1cb7b301aed699914f0b2b
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -102,16 +102,16 @@ Description: Jehon environnement
 
 Package: jehon-system-tv
 Source: jehon-debs
-Version: 1.3.0ubuntu6~13.gbpc35a64
+Version: 1.3.0ubuntu6~13.gbpdd4ec7
 Architecture: all
 Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 23
 Depends: jehon-env-home, build-essential, rbp-userland-dev-osmc, libvncserver-dev, libconfig++-dev
-Filename: jehon-system-tv_1.3.0ubuntu6~13.gbpc35a64_all.deb
-Size: 5152
-MD5sum: bca0323093c59ca0220ef3b7d58056d1
-SHA1: d920a2e4dec4dacd52044bf31639f9e754a6d3cf
-SHA256: d41829262ef22029297780e5c272bab0abae4717292806ec786e03c51663b394
+Filename: jehon-system-tv_1.3.0ubuntu6~13.gbpdd4ec7_all.deb
+Size: 5200
+MD5sum: ad0950013559aca18d857123a40826c5
+SHA1: 3201487fb4b625234f302cca8df6d405da919d4b
+SHA256: aa50a6adfb6182b7c1d5dc9120dc05dd8756f26ce30c33dc321b0bd2ccb008e6
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
