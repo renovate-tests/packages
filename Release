@@ -1,14 +1,14 @@
-Date: Sat, 07 Nov 2020 10:01:15 +0000
+Date: Fri, 27 Nov 2020 09:24:19 +0000
 Origin: jehon
 MD5Sum:
- 91e284a20653ca51de72e83b2cae8979             3452 Packages
- 7569624a1b1c938bb77b16c7e9996647               52 Release
+ 8aba1dc131c9e479c1f20105c608b443             3460 Packages
+ 8376faf83e6831b256049ff50ea42c53               52 Release
 SHA1:
- 8265176b886545cb2cdb6dece2895137f4f8f4a0             3452 Packages
- e52e3d63b56d84fe920c7d09199b27477924fcb5               52 Release
+ b2b6ba4c2f751c66b5c66a7fca3bd46a6265039d             3460 Packages
+ 8dab32f05d2ec12f7e44f3735f74c8fac0404c25               52 Release
 SHA256:
- abd9c8b8b76d5d778b81637c9f6852bee0afbcde75f0f7d28d1a8fd203d69f3b             3452 Packages
- bfbf74f948feabd4713ffcddd1845d358f47bec693b48e1551b456c7ed8200bf               52 Release
+ df6859892f75461c0d271ee03a7f1eccc5594da88f6a1185ad6bc543047006f2             3460 Packages
+ 5d3d9af65f3698f55b58c633e1731cf8354c5624a9d4ad0cf504af2aeb0cddec               52 Release
 SHA512:
- bc0fb3c2b49923b91cee72832d53ec958c4bba04d5ef5736ecfaa4ae33d98b986bfdb016f6d21649e9aae2bb0968ba1691a1aefbd1d9bf63828d7990a920c2a6             3452 Packages
- af13b06edb71d4529d52bfcd6f076d21f9aef5e61128ab6b2437a454ed692f65069e5ffd313905ad33f6e7b69302ef826e1a45ed80417ae9a3b9e522b1788199               52 Release
+ d37955d0bb21add783842eb75b7078ec86ed4a2de4f7c4549e10f1a65dbede72a5e78b2403cfddc90dd8764b3c951fb08e80cada2877745a027722280d91c3ff             3460 Packages
+ f9fbf50ec4af9c7bafefe1fba297f65f111850c2d5254d591181dd0fe206feefbf9ceddd010452d27ce443d9c4d84dd9aebc0da45dc0ea1303641436f59d9692               52 Release
