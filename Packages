@@ -9,10 +9,10 @@ Depends: debconf (>= 0.5) | debconf-2.0, debconf, sed, bash, sudo, sshpass, curl
 Conflicts: jehon-base-repositories, jehon-env-home
 Provides: jehon-base-repositories, jehon-env-home
 Filename: jehon-base-minimal.deb
-Size: 12704732
-MD5sum: a30d17ab282ff2f731f0b6d54f1a7c5e
-SHA1: 1d7b2adf28c8eb7244fc1d759a1db68ca82b1756
-SHA256: 0ad1644d8cca6cfda08622fe730271341957493ae1a369d5b047406537522c09
+Size: 12704656
+MD5sum: d936bd5ee470bd96206804b65513925e
+SHA1: 26b56f7395e3aaf589cee16d362e4e3a9e648e60
+SHA256: a583d7ec32919c9b15561ed01253cc9c1e91309c0aa02d2bdc5323216b84dce3
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -29,10 +29,10 @@ Depends: debconf (>= 0.5) | debconf-2.0, debconf, sed, bash, sudo, sshpass, curl
 Conflicts: jehon-base-repositories, jehon-env-home
 Provides: jehon-base-repositories, jehon-env-home
 Filename: jehon-base-minimal_2021.01.20.14.15.39_all.deb
-Size: 12704732
-MD5sum: a30d17ab282ff2f731f0b6d54f1a7c5e
-SHA1: 1d7b2adf28c8eb7244fc1d759a1db68ca82b1756
-SHA256: 0ad1644d8cca6cfda08622fe730271341957493ae1a369d5b047406537522c09
+Size: 12704656
+MD5sum: d936bd5ee470bd96206804b65513925e
+SHA1: 26b56f7395e3aaf589cee16d362e4e3a9e648e60
+SHA256: a583d7ec32919c9b15561ed01253cc9c1e91309c0aa02d2bdc5323216b84dce3
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -47,10 +47,10 @@ Installed-Size: 9
 Pre-Depends: dpkg (>= 1.17.14)
 Depends: jehon-base-minimal, nodejs, docker-ce, docker-ce-cli, containerd.io
 Filename: jehon-base-thirdparties_2021.01.20.14.15.39_all.deb
-Size: 2324
-MD5sum: cd333c992970464efebc881766251c27
-SHA1: 2d89bb4d4cc16d31f380c107faafc3800285571f
-SHA256: 9be503fc3ec4ba64caabcd2d07ef2905f61bcc233b1430102ce6f089605d1051
+Size: 2320
+MD5sum: c34d318241ba063c253ac3c2920bd9a3
+SHA1: d28448b3392808f2f043af04bc83a0554aae025d
+SHA256: afc19e76096cf1b4c51672e9768ba05cd9ec8ecca6266dbe73534b791eef07a5
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -65,10 +65,10 @@ Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 9
 Depends: jehon-base-thirdparties, git-cola, xclip, gparted, pdfsam, activity-log-manager, terminator, xtermcontrol, meld, exfat-fuse, exfat-utils, xprintidle, snapd, libgtk2.0-0, libnotify-dev, libgconf-2-4, libnss3, libxss1, libasound2, google-chrome-stable
 Filename: jehon-env-desktop_2021.01.20.14.15.39_all.deb
-Size: 2400
-MD5sum: 576d59222fde34ec6711daadae1d7c32
-SHA1: 9f8478e4d488afc3c30b983b19b38ab9f4b9b3fe
-SHA256: 8b801c7da90e2e48665471f203b1b8a359a5b891bee57a0284b1b462e678285a
+Size: 2396
+MD5sum: bae009957dc4d552b8315e68acc3e32c
+SHA1: b1caa4190fee1507a73b092213125c2531bebfed
+SHA256: 0dea36d342eb1087e4922ac370c78c66c073a3e52bda0d041b43d294fcd1eb84
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -82,10 +82,10 @@ Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 9
 Depends: jehon-base-minimal, jehon-env-desktop, rar, unrar, libnss3-dev, libatk1.0-dev, encfs
 Filename: jehon-system-private_2021.01.20.14.15.39_all.deb
-Size: 2300
-MD5sum: b77e02ca6037abff4c36f66917403690
-SHA1: a43ae0c1917103a4c5465143433d6f596a967285
-SHA256: 546e684424b0d1abaff9ec942e66ada0403451c485f18ae8b8e05be6af4bb043
+Size: 2292
+MD5sum: b374adbc2550728959f1109cc8e1d740
+SHA1: 59ea73865b26b8b51bda798caa4139c37e58f463
+SHA256: b076a2bb7e504395a102a7a15aa4b2dc10469088b5bf4c85cec0fd90c90a5313
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -99,10 +99,10 @@ Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 10
 Depends: build-essential, rbp-userland-dev-osmc, libvncserver-dev, libconfig++-dev
 Filename: jehon-system-tv_2021.01.20.14.15.39_all.deb
-Size: 2624
-MD5sum: 4090bbd0e24c7f04fcef25f9c9bc0644
-SHA1: 6118fe8d1899e6df5d23dca50dcae1302b659ade
-SHA256: 62e73a35bc5ea4535e24e48b3a432793a9ce3816dd3cc768c144fcb049a862ad
+Size: 2620
+MD5sum: d0db2cc3ed9f7bc9acb5df50cffc4c5c
+SHA1: d153ad187c363a87c38fa8a981d279a332eb9e82
+SHA256: 5af4a4f986880086ca1a471f7c1034e0c255591b481c678d06f5939b415b2527
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
