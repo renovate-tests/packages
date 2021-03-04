@@ -9,10 +9,10 @@ Depends: debconf (>= 0.5) | debconf-2.0, debconf, sed, bash, sudo, sshpass, curl
 Conflicts: jehon-base-repositories, jehon-env-home
 Provides: jehon-base-repositories, jehon-env-home
 Filename: jehon-base-minimal.deb
-Size: 12705956
-MD5sum: 7bfc7513662782a354662788ea9031ed
-SHA1: 88f3cb11695b5ac529987ed403a233c186d92eb9
-SHA256: 184d46a0b2e50885b75dd5ffbf2d006a8293dd1f4e92b789f5d5f1468117d0ba
+Size: 12705976
+MD5sum: c7c9d9d798ed0f24adcfad0f8b79c579
+SHA1: 86ddfe69722ab0424a7c1762df576aad97b86d0d
+SHA256: 8b42878e0e29e2a9c5fbb5c83fa53521adf559b79a1e22c3453ce7324ae17d49
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -29,10 +29,10 @@ Depends: debconf (>= 0.5) | debconf-2.0, debconf, sed, bash, sudo, sshpass, curl
 Conflicts: jehon-base-repositories, jehon-env-home
 Provides: jehon-base-repositories, jehon-env-home
 Filename: jehon-base-minimal_2021.03.03.20.42.21_all.deb
-Size: 12705956
-MD5sum: 7bfc7513662782a354662788ea9031ed
-SHA1: 88f3cb11695b5ac529987ed403a233c186d92eb9
-SHA256: 184d46a0b2e50885b75dd5ffbf2d006a8293dd1f4e92b789f5d5f1468117d0ba
+Size: 12705976
+MD5sum: c7c9d9d798ed0f24adcfad0f8b79c579
+SHA1: 86ddfe69722ab0424a7c1762df576aad97b86d0d
+SHA256: 8b42878e0e29e2a9c5fbb5c83fa53521adf559b79a1e22c3453ce7324ae17d49
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -47,10 +47,10 @@ Installed-Size: 9
 Pre-Depends: dpkg (>= 1.17.14)
 Depends: jehon-base-minimal, nodejs, docker-ce, docker-ce-cli, containerd.io
 Filename: jehon-base-thirdparties_2021.03.03.20.42.21_all.deb
-Size: 2232
-MD5sum: 502cc3749ab44ffe7ec263da093d16c4
-SHA1: 4b336d6234e931281df88b1454cc930e9424ae5a
-SHA256: 414ec7998f4958ba7fe118ade524923f78e63e312e59c998463f28aaa91beb93
+Size: 2244
+MD5sum: 96bc78b3a65f78129ecaf0f18f2ec56d
+SHA1: 74ebd80ab96af68100eb3cce36b76eff2a4147ed
+SHA256: d6377969e7c7f0f20e221f4f4e33bbf107ea61ae0b9bb96513430029a0677bd2
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -67,10 +67,10 @@ Depends: jehon-base-thirdparties, git-cola, xclip, gparted, pdfsam, activity-log
 Conflicts: jehon-system-private
 Provides: jehon-system-private
 Filename: jehon-env-desktop_2021.03.03.20.42.21_all.deb
-Size: 2344
-MD5sum: 7510744f96cea9f94b038f638ff07b3c
-SHA1: f52fa41ecebe59a267c5e408ec8deab6063c8530
-SHA256: cbb454c1eb4a6d894217cdfe590ecc5ca275adf96c1debd256837b58a39ca5df
+Size: 2348
+MD5sum: fb5c965f6973e04f2b6ba61c797e22e1
+SHA1: d5930a7f0bc743cde9278685d765f7d834583f9b
+SHA256: ad61258fe938e9ed0f6ffc81bc627f8ff8393e2ebd3ffb7058f4d23392c81683
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
@@ -84,10 +84,10 @@ Maintainer: Jean Honlet <marielineet.jean@gmail.com>
 Installed-Size: 10
 Depends: jehon-base-minimal, build-essential, rbp-userland-dev-osmc, libvncserver-dev, libconfig++-dev
 Filename: jehon-system-tv_2021.03.03.20.42.21_all.deb
-Size: 2548
-MD5sum: 40047cb8a49eba47e26c90db2a43ac72
-SHA1: acae4cb1fb0d485dc88fdde0068c9b02bae94865
-SHA256: c8e4d185324279ff1fb2372a7f0f38ae15a1a98272eb3cdde737a734c8a26fad
+Size: 2560
+MD5sum: ed7cdd41a99ae608fda171334f99a8ca
+SHA1: d962a0c9d48f35e4f391988492c8c2f38dd653d4
+SHA256: f1b4e3c5a504ae3bb32fb18e163ea4c515ed3199ec7e7804026f3dd0c2102d42
 Section: unknown
 Priority: extra
 Homepage: http/www.bitbucket.org/jehon/packages/
