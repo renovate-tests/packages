@@ -174,23 +174,23 @@ dockers-kill:
 # Externals
 #
 #
-all-clean: externals-clean
-all-build: externals-build
+# all-clean: externals-clean
+# all-build: externals-build
 
-.PHONY: externals-clean
-externals-clean:
-	rm -f externals/shuttle-go/shuttle-go
+# .PHONY: externals-clean
+# externals-clean:
+# 	rm -f externals/shuttle-go/shuttle-go
 
-.PHONY: externals-update
-externals-update:
-	# TODO: check this !
-	git subtree pull --prefix externals/shuttle-go git@github.com:abourget/shuttle-go.git master --squash
+# .PHONY: externals-update
+# externals-update:
+# 	# TODO: check this !
+# 	git subtree pull --prefix externals/shuttle-go git@github.com:abourget/shuttle-go.git master --squash
 
-.PHONY: externals-build
-externals-build: externals/shuttle-go/shuttle-go
+# .PHONY: externals-build
+# externals-build: externals/shuttle-go/shuttle-go
 
-externals/shuttle-go/shuttle-go: externals/shuttle-go/*.go
-	cd externals/shuttle-go && ./build.sh
+# externals/shuttle-go/shuttle-go: externals/shuttle-go/*.go
+# 	cd externals/shuttle-go && ./build.sh
 
 
 #
@@ -207,7 +207,7 @@ all-lint: files-lint
 files-clean:
 	rm -fr conf/generated
 	rm -fr dockers/jenkins/shared/generated/
-	rm -f jehon-base-minimal/usr/bin/shuttle-go
+#	rm -f jehon-base-minimal/usr/bin/shuttle-go
 	rm -f jehon-base-minimal/usr/share/jehon-base-minimal/etc/ssh/authorized_keys/jehon
 	rm -f synology/ssh/root/authorized_keys
 
@@ -219,9 +219,10 @@ files-build: \
 		dockers/jenkins/shared/generated/jenkins-master-to-slave-ssh \
 		dockers/jenkins/shared/generated/secrets.properties \
 		dockers/jenkins/shared/generated/timezone \
-		jehon-base-minimal/usr/bin/shuttle-go \
 		jehon-base-minimal/usr/share/jehon-base-minimal/etc/ssh/authorized_keys/jehon \
 		synology/ssh/root/authorized_keys
+
+#		jehon-base-minimal/usr/bin/shuttle-go
 
 	find tests -name "*.sh" -exec "chmod" "+x" "{}" ";"
 	find bin -exec "chmod" "+x" "{}" ";"
@@ -279,9 +280,9 @@ dockers/jenkins/shared/generated/timezone: jehon-base-minimal/usr/share/jehon-ba
 	@mkdir -p "$(dir $@)"
 	cat "$<" | tr -d '\n' > "$@"
 
-jehon-base-minimal/usr/bin/shuttle-go: externals/shuttle-go/shuttle-go
-	@mkdir -p "$(dir $@)"
-	cp externals/shuttle-go/shuttle-go "$@"
+# jehon-base-minimal/usr/bin/shuttle-go: externals/shuttle-go/shuttle-go
+# 	@mkdir -p "$(dir $@)"
+# 	cp externals/shuttle-go/shuttle-go "$@"
 
 jehon-base-minimal/usr/share/jehon-base-minimal/etc/ssh/authorized_keys/jehon: $(call recursive-dependencies,conf/keys/admin,$@)
 	@mkdir -p "$(dir $@)"
@@ -377,9 +378,10 @@ repo/.built: dockers/jehon-docker-build/.dockerbuild \
 		debian/*.templates \
 		debian/*.triggers \
 		debian/jehon-base-minimal.links \
-		jehon-base-minimal/usr/bin/shuttle-go \
 		$(shell find . -path "./jehon-*" -type f) \
 		jehon-base-minimal/usr/share/jehon-base-minimal/etc/ssh/authorized_keys/jehon
+
+#		jehon-base-minimal/usr/bin/shuttle-go
 
 	$(call itself,files-build)
 	@rm -fr repo
