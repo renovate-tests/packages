@@ -54,7 +54,7 @@ jenkins:
   nodes:
     # https://github.com/jenkinsci/configuration-as-code-plugin/tree/master/demos/build_agents
     - permanent:
-        name: "wsl"
+        name: "self"
         labelString: "docker"
         mode: NORMAL
         numExecutors: 1
