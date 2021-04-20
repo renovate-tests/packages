@@ -5,9 +5,16 @@ set -e
 # shellcheck source=/dev/null
 . jh-lib.sh
 
-NAME='jehon'
+KEY="bin/packages-cryp-key"
+if [ ! -r "$KEY" ]; then
+    echo "Please store "$KEY" for git-crypt" >&2
+    exit 1
+fi
 
-curl "https://api.github.com/users/$NAME/repos?page=1&per_page=100" \
+header "Configuring git"
+jh-git-config-global
+
+curl --silent --show-error "https://api.github.com/users/jehon/repos?page=1&per_page=100" \
     | jq -c ".[] | select (.archived == false) | select(.)" \
     | while read -r L ; do \
 
@@ -15,8 +22,8 @@ curl "https://api.github.com/users/$NAME/repos?page=1&per_page=100" \
         URL="$(echo "$L" | jq -r ".ssh_url")"
 
         # echo "$L"
-        header "$NAME"
-        echo "Url: $URL"
+        header "$NAME ($URL)"
+        # echo "Url: $URL"
 
         if [ -r "$NAME" ]; then
             ok "Already checked out: $NAME"
@@ -128,8 +135,7 @@ curl "https://api.github.com/users/$NAME/repos?page=1&per_page=100" \
 #   }
 
 if [ -x packages/setup-profile.sh ]; then
-    header "Setting up the profile"
-    # TODO: use "patch" instead
+    header "Setting up the profile ($HOME/.bashrc)"
     PF="$(pwd -L)/packages/repo/profile-patch"
     cat <<-EOF >"$PF"
 #
@@ -140,8 +146,36 @@ if [ -x packages/setup-profile.sh ]; then
 . $(pwd -L)/packages/setup-profile.sh
 
 EOF
-    jh-patch-file.sh "$PF"
+    jh-patch-file "$PF"
 
-    header "Setting up apt to local repo"
-    sudo bash -c "echo 'deb [trusted=yes] file://$(pwd -L)/packages/repo /' > /etc/apt/sources.list.d/jehon-package-repo.list"
+    header "** Configure APT **"
+    FILE="/etc/apt/sources.list.d/jehon-package-repo.list"
+
+    LINE="deb [trusted=yes] file://$(pwd -L)/packages/repo /"
+    ORIGINAL="$( cat "$FILE" )"
+
+    if [ "$ORIGINAL" != "$LINE" ]; then
+        warning "!! Need to update $FILE (as root) !!"
+        echo "original :  $ORIGINAL" >&2
+        echo "should be: $LINE" >&2
+        echo "--- Do that as root ---"
+        if [ -w /etc/apt/sources.list.d/jehon-package-repo.list ]; then
+            echo "$LINE" | sudo tee /etc/apt/sources.list.d/jehon-package-repo.list
+        else
+            echo "$LINE" > ~/jehon-package-repo.list
+            echo "Copy it to target:"
+            echo "sudo cp jehon-package-repo.list /etc/apt/sources.list.d"
+        fi
+    fi
 fi
+
+for F in ./* ; do
+    if [ -r "$F/.git/git-crypt/keys/default" ]; then
+        header "Uncrypting $F"
+        pushd "$F" > /dev/null
+        git-crypt unlock "../$KEY" || ko "Could not use git-crypt, repository $F not clean"
+        popd > /dev/null
+    fi
+done
+
+header "Done"

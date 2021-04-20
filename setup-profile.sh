@@ -40,24 +40,4 @@ fi
 header "** Configure CDPATH **"
 CDPATH=".:$SRC"
 
-header "** Configure APT **"
-FILE="/etc/apt/sources.list.d/jehon-package-repo.list"
-
-LINE="deb [trusted=yes] file://$JH_PKG_FOLDER/repo /"
-ORIGINAL="$( cat "$FILE" )"
-
-if [ "$ORIGINAL" != "$LINE" ]; then
-    warning "!! Need to update $FILE (as root) !!"
-    echo "original :  $ORIGINAL" >&2
-    echo "should be: $LINE" >&2
-	echo "--- Do that as root ---"
-	if [ -w /etc/apt/sources.list.d/jehon-package-repo.list ]; then
-    	echo "$LINE" | sudo tee /etc/apt/sources.list.d/jehon-package-repo.list
-	else
-		echo "$LINE" > ~/jehon-package-repo.list
-		echo "Copy it to target:"
-		echo "sudo cp jehon-package-repo.list /etc/apt/sources.list.d"
-	fi
-fi
-
 export JH_PKG_FOLDER

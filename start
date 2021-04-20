@@ -45,7 +45,7 @@ SSH is enabled through the firewall
 You may now install:
 
 1/ delete this scrip:                          rm -f "$0"
-2/ download the git repositories:              sudo jh-checkout
+2/ download the git repositories:              sudo jh-dev-setup
 3/ setup hyperv:                               sudo jh-setup-hyperv
 4/ install packages:                           sudo apt install jehon-base-thirdparties jehon-env-desktop
 5/ install snaps:                              sudo apt jh-snap-install
