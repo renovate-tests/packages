@@ -27,7 +27,7 @@ truncate --size 0 "$PATCHING"
 #    and add it to the PATCHING list
 #
 for S in "$ROOT"/patch/* ; do
-	/usr/bin/jh-patch-file.sh "$S" >> "$PATCHING"
+	/usr/bin/jh-patch-file "$S" >> "$PATCHING"
 done
 
 #
@@ -44,7 +44,7 @@ while read L ; do
 	fi
 
 	# echo "*** $L - $FILE - $TAG"
-	/usr/bin/jh-patch-file.sh "uninstall" "$FILE" "$TAG"
+	/usr/bin/jh-patch-file "uninstall" "$FILE" "$TAG"
 done < <( diff --new-file "$PATCHED" "$PATCHING" | grep "<" )
 
 #

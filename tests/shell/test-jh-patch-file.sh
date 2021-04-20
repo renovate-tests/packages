@@ -26,7 +26,7 @@ cat <<-EOF >"$PATCH"
 	Hello world
 EOF
 
-capture "jh-patch-file-patch" "$JH_ROOT"/jehon-base-minimal/usr/bin/jh-patch-file.sh "$PATCH"
+capture "jh-patch-file-patch" "$JH_ROOT"/jehon-base-minimal/usr/bin/jh-patch-file "$PATCH"
 assert_captured_success "should be successfull"
 
 capture "jh-patch-file-patch read" cat "$TARGET"
@@ -40,7 +40,7 @@ assert_captured_output_contains "This is the file"
 assert_captured_output_contains "Hello world"
 capture_empty
 
-capture "jh-patch-file-patch" $JH_ROOT/jehon-base-minimal/usr/bin/jh-patch-file.sh "uninstall" "$TARGET" "test"
+capture "jh-patch-file-patch" $JH_ROOT/jehon-base-minimal/usr/bin/jh-patch-file "uninstall" "$TARGET" "test"
 assert_captured_success "should be successfull"
 
 capture_file "read the generated file" "$TARGET"
