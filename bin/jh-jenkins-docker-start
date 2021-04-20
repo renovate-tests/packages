@@ -7,12 +7,22 @@ set -e
 
 # See https://www.jenkins.io/doc/book/installing/docker/
 
-echo "********* Starting SSH on host...   ******************"
-sudo service ssh start
-echo "********* Starting SSH on host done ******************"
+header "Starting SSH on host..."
+if ! nc -vz 127.0.0.1 22 ; then
+    sudo service ssh start
+    ok "Starting SSH on host done"
+else
+    ok "Starting SSH on host: already started"
+fi
+
+if [ ! -r /etc/ssh/authorized_keys/jenkins ]; then
+    header "SSH access: no jenkins key configured, you will not be able to launch agent"
+    sudo bash -c "$(which jh-ssh-generate-authorized-keys) jenkins > /etc/ssh/authorized_keys/jenkins"
+    ok "SSH access configured"
+fi
 
 WEB=8080
-REVERSE_IP="$(jh-ip-list | grep 172 | cut -f 2 -d ' ')"
+REVERSE_IP="$(jh-ip-list | grep docker | grep 172 | cut -f 2 -d ' ')"
 
 pushd "$JH_PKG_FOLDER" > /dev/null
 
@@ -47,12 +57,16 @@ cat <<EOT
 
 EOT
 
+#
+# host.docker.internal: https://stackoverflow.com/q/31324981/1954789
+#
+
 docker run --restart unless-stopped --name jenkins \
     -p $WEB:8080 \
     -p 2022:22 \
     --detach \
+    --add-host=host.docker.internal:host-gateway \
     jehon/jenkins
-
 
 #    --add-host="host.docker.internal:$REVERSE_IP" \
 
