@@ -36,9 +36,19 @@ apt-get install --yes "$LOCAL_DEB"
 apt-get --yes update
 apt-get --yes upgrade
 
-echo ""
-echo ""
-echo ""
-echo ""
-echo "*** Install done ***"
-echo "SSH is enabled through the firewall"
+cat <<EOD
+
+
+*** Install done ***
+SSH is enabled through the firewall
+
+You may now install:
+
+1/ download the git repositories:              sudo jh-checkout
+2/ setup hyperv:                               sudo jh-setup-hyperv
+3/ install packages:                           sudo apt install jehon-base-thirdparties jehon-env-desktop
+4/ install snaps:                              sudo apt jh-snap-install
+
+You also need to logout/login to jump into docker group before testing repositories
+
+EOD

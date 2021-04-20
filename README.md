@@ -3,7 +3,16 @@
 This repository is for personal use only.
 It contains helper scripts tailored for my usage.
 
+Start by enabling ssh?
+
+```
+sudo apt install openssh-server
+```
+
+Launch the start script:
+```
 wget https://raw.githubusercontent.com/jehon/packages/master/start; chmod +x start; less start; ./start
+```
 
 ## Ubuntu
 
