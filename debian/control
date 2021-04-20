@@ -61,7 +61,7 @@ Depends: ${misc:Depends},
 	ufw,
 	git-crypt,
 	imagemagick-6.q16,
-	make, gcc
+	make, gcc, xdotool, exiv2,chromium-browser
 Description: Jehon minimal hooks
 
 Package: jehon-base-thirdparties
