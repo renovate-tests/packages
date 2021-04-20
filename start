@@ -24,8 +24,8 @@ fi
 
 if [ ! -r "$LOCAL_DEB" ]; then
     echo "*** Installing source from github"
-    wget "http://jehon.github.io/packages/jehon-base-minimal.deb" -O "${JH_PKG_MINIMAL_NAME}.deb"
-    LOCAL_DEB="./${JH_PKG_MINIMAL_NAME}.deb"
+    LOCAL_DEB="/tmp/${JH_PKG_MINIMAL_NAME}.deb"
+    wget "http://jehon.github.io/packages/jehon-base-minimal.deb" -O "$LOCAL_DEB"
 fi
 
 echo "*** Using deb: $LOCAL_DEB"
@@ -44,10 +44,11 @@ SSH is enabled through the firewall
 
 You may now install:
 
-1/ download the git repositories:              sudo jh-checkout
-2/ setup hyperv:                               sudo jh-setup-hyperv
-3/ install packages:                           sudo apt install jehon-base-thirdparties jehon-env-desktop
-4/ install snaps:                              sudo apt jh-snap-install
+1/ delete this scrip:                          rm -f "$0"
+2/ download the git repositories:              sudo jh-checkout
+3/ setup hyperv:                               sudo jh-setup-hyperv
+4/ install packages:                           sudo apt install jehon-base-thirdparties jehon-env-desktop
+5/ install snaps:                              sudo apt jh-snap-install
 
 You also need to logout/login to jump into docker group before testing repositories
 
