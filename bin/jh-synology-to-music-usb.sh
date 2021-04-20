@@ -6,7 +6,7 @@ if [ ! -r ".music" ]; then
 fi
 
 jh-rsync.sh \
-	/home/jehon/gvfs/smb-share\:server\=192.168.1.9\,share\=music/ \
+	"/home/jehon/gvfs/smb-share:server=192.168.1.9,share=music/" \
 	. \
 	--exclude .music \
 	--exclude "#recycle" \
