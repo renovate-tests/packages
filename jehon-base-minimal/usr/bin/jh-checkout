@@ -20,16 +20,16 @@ curl "https://api.github.com/users/$NAME/repos?page=1&per_page=100" \
 
         if [ -r "$NAME" ]; then
             ok "Already checked out: $NAME"
-            ( cd "$NAME" && git pull )
+            ( cd "$NAME" && git pull ) > /dev/null
             continue
         else
-            git clone "$URL" "$NAME"
+            git clone "$URL" "$NAME" > /dev/null
             ok "Checked out at $NAME"
         fi
     done
 
 #
-# Lieve result
+# Live result
 #
 
 #  {
@@ -126,3 +126,22 @@ curl "https://api.github.com/users/$NAME/repos?page=1&per_page=100" \
 #     "watchers": 1,
 #     "default_branch": "master"
 #   }
+
+if [ -x packages/setup-profile.sh ]; then
+    header "Setting up the profile"
+    # TODO: use "patch" instead
+    PF="$(pwd -L)/packages/repo/profile-patch"
+    cat <<-EOF >"$PF"
+#
+# File: $HOME/.bashrc
+# Tag: jh-git-checkout
+#
+
+. $(pwd -L)/packages/setup-profile.sh
+
+EOF
+    jh-patch-file.sh "$PF"
+
+    header "Setting up apt to local repo"
+    sudo bash -c "echo 'deb [trusted=yes] file://$(pwd -L)/packages/repo /' > /etc/apt/sources.list.d/jehon-package-repo.list"
+fi
