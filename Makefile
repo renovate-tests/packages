@@ -45,24 +45,6 @@ export PATH := $(ROOT)/jehon-base-minimal/usr/bin:$(PATH)
 #
 
 #
-#
-# First install
-#
-#
-.PHONY: setup-computer
-setup-computer:
-	sudo apt install -y debhelper git-buildpackage
-	make packages-build
-	sudo dpkg -i repo/jehon-base-minimal_*.deb || true
-	sudo apt install -f -y
-	sudo jehon-base-minimal/usr/bin/jh-apt-add-packages-key.sh
-	sudo apt update
-	sudo snap install --classic go
-	@echo "You should add "
-	@echo ". $(ROOT)/setup-profile.sh "
-	@echo "in your profile"
-
-#
 # find recursive dependencies in folder $1 (newer than $2)
 #
 # 1: folder where to look
