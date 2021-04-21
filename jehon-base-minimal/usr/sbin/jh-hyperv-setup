@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+HV_ROOT="/usr/share/jehon/hyperv"
+HV_ROOT="jehon-base-minimal/$HV_ROOT"
+
+# Take the full place
+growpart /dev/sda 1 || true
+resize2fs /dev/sda1
+
+inst() {
+    if [ -e "$2" ] || [ -L "$2" ]; then
+        rm -f "$2"
+    fi
+    ln -f -s "$1" "$2"
+}
+
+# Set the screen size
+
+inst $HV_ROOT/grub-hyperv.cfg /etc/default/grub.d/80-hyperv.cfg
+update-grub
+
+# Configure the network
+inst $HV_ROOT/netplan-hyperv.yaml /etc/netplan/80-hyperv.yaml
+netplan apply
