@@ -185,6 +185,7 @@ dockers-kill:
 # externals-build: externals/shuttle-go/shuttle-go
 
 # externals/shuttle-go/shuttle-go: externals/shuttle-go/*.go
+# TODO: in docker !
 # 	cd externals/shuttle-go && ./build.sh
 
 
@@ -407,6 +408,7 @@ deploy: deploy-local deploy-synology
 
 .PHONY: deploy-github
 deploy-github: repo/Release.gpg node-setup
+# TODO: in docker ?
 	git remote -v
 
 	UE="$$( git --no-pager show -s --format="%an" ) <$$( git --no-pager show -s --format="%ae" )>"; \
