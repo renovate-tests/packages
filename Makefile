@@ -64,12 +64,7 @@ endef
 #
 # Run the command in a docker container
 #
-# 1: command to be run
-#
-define in_docker
-	@echo "*** in docker: $1 ***"
-	@docker run -e HOST_UID="$(shell id -u)" -e HOST_GID="$(shell id -g)" --mount "source=$(ROOT),target=/app,type=bind" jehon/jehon-docker-build "$1"
-endef
+RUN_IN_DOCKER=docker run -e HOST_UID='$(shell id -u)' -e HOST_GID='$(shell id -g)' --mount 'source=$(ROOT),target=/app,type=bind' jehon/jehon-docker-build
 
 #
 #
@@ -354,10 +349,10 @@ repo/Release.gpg: repo/Release $(GPG_KEYRING)
 	gpg --sign --armor --detach-sign --no-default-keyring --keyring=$(GPG_KEYRING) --default-key "$(GPG_KEY)" --output repo/Release.gpg repo/Release
 
 repo/Release: repo/Packages dockers/jehon-docker-build/.dockerbuild
-	$(call in_docker,cd repo && apt-ftparchive -o "APT::FTPArchive::Release::Origin=jehon" release . > Release)
+	$(RUN_IN_DOCKER) "cd repo && apt-ftparchive -o "APT::FTPArchive::Release::Origin=jehon" release ." > "$@"
 
 repo/Packages: repo/index.html repo/jehon-base-minimal.deb
-	cd repo && dpkg-scanpackages -m . | sed -e "s%./%%" > Packages
+	$(RUN_IN_DOCKER) "cd repo && dpkg-scanpackages -m ." | sed -e "s%./%%" > "$@"
 
 repo/index.html: repo/.built
 # Generate the index.html for github pages
@@ -387,12 +382,12 @@ repo/.built: dockers/jehon-docker-build/.dockerbuild \
 	@rm -fr repo
 	@mkdir -p "$(dir $@)"
 #echo "************ build indep ******************"
-	$(call in_docker,rsync -a /app /tmp/ \
+	$(RUN_IN_DOCKER) "rsync -a /app /tmp/ \
 		&& cd /tmp/app \
 		&& gbp dch --git-author --ignore-branch --new-version=$(VERSION) --distribution main \
 		&& debuild -rsudo --no-lintian -uc -us --build=binary \
-		&& cp ../jehon-*.deb /app/repo/ \
-	)
+		&& cp ../jehon-*.deb /app/repo/ "
+
 #echo "************ build arch:armhf *************"
 # && debuild -rsudo --no-lintian -uc -us --build=any --host-arch armhf && ls -l /tmp && cp ../jehon-*.deb /app/repo/
 	touch "$@"
