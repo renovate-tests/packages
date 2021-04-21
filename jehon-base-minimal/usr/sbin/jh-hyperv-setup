@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
+
+# shellcheck source=../bin/jh-lib.sh
+. jh-lib.sh
 
 HV_ROOT="/usr/share/jehon/hyperv"
-HV_ROOT="jehon-base-minimal/$HV_ROOT"
 
+if [ ! -w /dev/sda1 ]; then
+    echo "You should be root to run this script" >&2
+    exit 1
+fi
+
+header "Grow /dev/sda if possible"
 # Take the full place
 growpart /dev/sda 1 || true
 resize2fs /dev/sda1
@@ -19,9 +26,14 @@ inst() {
 
 # Set the screen size
 
+header "Configuring grub"
 inst $HV_ROOT/grub-hyperv.cfg /etc/default/grub.d/80-hyperv.cfg
 update-grub
+echo ""
 
-# Configure the network
+header "Configuring the network"
 inst $HV_ROOT/netplan-hyperv.yaml /etc/netplan/80-hyperv.yaml
 netplan apply
+echo ""
+
+header "Done"
