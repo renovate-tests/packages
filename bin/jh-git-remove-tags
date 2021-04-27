@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# shellcheck source=../jehon-base-minimal/usr/bin/jh-lib.sh
+. jh-lib.sh
+
+set -e
+
+header "Remove remote tags"
+git tag | xargs git tag -d
+
+header "Remove local tags"
+git tag -l | xargs git tag -d
+
+header "Pushing to server"
+git push --tags
+
+ok "Done"

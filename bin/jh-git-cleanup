@@ -2,142 +2,146 @@
 
 set -e
 
-# shellcheck source=../jehon-base-minimal/usr/bin/jh-lib.sh
-. jh-lib.sh
-
-# set -x
-
-ANON="jehon@users.noreply.github.com"
-EXEC="echo"
-
 # Thanks to https://stackoverflow.com/a/454750/1954789
 # See https://git-scm.com/docs/git-filter-branch
 #
-# git filter-branch --env-filter \
-#     'if [ $GIT_COMMIT = 119f9ecf58069b265ab22f1f97d2b648faf932e0 ]
-#      then
-#          export GIT_AUTHOR_DATE="Fri Jan 2 21:38:53 2009 -0800"
-#          export GIT_COMMITTER_DATE="Sat May 19 01:01:01 2007 -0700"
-#      fi'
+
+# getListOfCommitsInWH() {
+#     # output
+#     #   7f9a3f894f1d503c4739d681222f2bf084452b7e 2021-04-22-09-05-06
+#     LASTDAY=""
+#     while read -r T ; do
+#         # echo "$T"
+#         [[ "$T" =~ ^([[:alnum:]]+)\ ([0-9]+)\ .*\ ([+-]([0-9]){4})$ ]]
+#         # echo "${BASH_REMATCH[1]}"
+#         # echo "${BASH_REMATCH[2]}"
+#         # echo "${BASH_REMATCH[3]}"
 #
-# Variable that can be used:
-#    See https://git-scm.com/docs/git-commit
+#         HASH="${BASH_REMATCH[1]}"
+#         TS=${BASH_REMATCH[2]}
+#         TZ=${BASH_REMATCH[3]}
 #
-# GIT_AUTHOR_NAME
-# GIT_AUTHOR_EMAIL
-# GIT_AUTHOR_DATE
-# GIT_COMMITTER_NAME
-# GIT_COMMITTER_EMAIL
-# GIT_COMMITTER_DATE
+#         HR=$( date --date="@$TS" "+%F %H-%M-%S" )
+#         WE=$( date --date="@$TS" "+%u" )
+#         DAY=$( date --date="@$TS" "+%F" )
+#         HOUR="$( date --date="@$TS" "+%H" )"
+#         HOUR="${HOUR#0}"
 #
+#         if [[ "$TZ" != "+0100" ]] && [[ "$TZ" != "+0200" ]] && [[ "$TZ" != "+0000" ]]; then
+#             echo "Skipping TZ: $TZ ($DAY)"
+#             continue
+#         fi
+#
+#         if [ "$DAY" != "$LASTDAY" ]; then
+#             # echo "* $DAY"
+#             LASTDAY="$DAY"
+#             LASTHOURSOURCE="$HOUR"
+#             LASTHOURTARGET="17"
+#             CNT="1"
+#         fi
+#
+#         # echo "$HASH - $TS: $HR - ${WE}dow - ${HOUR}h (vs $LASTHOURSOURCE / $LASTHOURTARGET)"
+#
+#         if (( WE <= 5 && HOUR >= 8 )); then
+#             # echo "- need shift"
+#             (( NH = HOUR ))
+#             ND="$DAY"
+#             if (( HOUR > LASTHOURTARGET )) ; then
+#                 continue;
+#             fi
+#             if (( HOUR == LASTHOURTARGET && HOUR == LASTHOURSOURCE )); then
+#                 continue;
+#             fi
+#
+#             if (( HOUR > LASTHOURSOURCE )) ; then
+# #                    echo "- next hour"
+#                     (( LASTHOURTARGET++ ))
+#                     if (( LASTHOURTARGET > 23 )) ; then
+#                         echo "Too much shift on $DAY $HR -> $CNT"
+#                         NH="23-59-$( printf "%02d" ${CNT} )"
+#                         (( CNT++ ))
+#                         if (( CNT > 59 )) ; then
+#                             echo "Too too much shift on $DAY: $CNT overflow"
+#                             exit 1
+#                             continue
+#                         fi
+#                     fi
+#             fi
+#             (( LASTHOURSOURCE = HOUR ))
+#             (( NH = LASTHOURTARGET ))
+#
+#             if (( NH != HOUR )); then
+#                 NEW=$( date --date="@$TS" "+$NH:%M:%S" )
+#                 replaceCommitDate "$HASH" "$ND $NEW $TZ" "$HR"
+#             fi
+#         fi
+#     done < <(  git log --all --reverse --full-history --format='%H %at %aD' )
+# }
 
-# --date=
+# getListOfCommitsInWH
 
-getListOfCommits() {
-    git log --all --full-history --format='%H %ae %an'
-}
+# shellcheck source=../jehon-base-minimal/usr/bin/jh-lib.sh
+. jh-lib.sh
 
+export SWD="$(pwd)"
 
-getListOfCommiters() {
-    # alex@bourget.cc: remote go
+FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --env-filter '
+    #
+    # Variable that can be used:
+    #    See https://git-scm.com/docs/git-commit
+    #
+    # GIT_AUTHOR_NAME
+    # GIT_AUTHOR_EMAIL
+    # GIT_AUTHOR_DATE
+    # GIT_COMMITTER_NAME
+    # GIT_COMMITTER_EMAIL
+    # GIT_COMMITTER_DATE
+    #
 
-    git log --all --full-history --format='%ae %an' | sort | uniq
-}
+    ANON="jehon@users.noreply.github.com"
 
-replaceCommiters() {
-    # 1: new
-    # 2: old
-    header "Replacing $2 by $1..."
+    log() {
+        printf "$GIT_COMMIT | %10s | %s" "$1" "$2" > $SWD/tmp.log
+    }
 
-    # $EXEC git filter-branch --env-filter \
-    #     "if [ \$GIT_AUTHOR_EMAIL = '$1' ]; then
-    #         export GIT_AUTHOR_EMAIL='$2'
+    replaceCommiters() {
+        # 1: old email to be remplaced
+        if [ "$GIT_AUTHOR_EMAIL" = "$1" ]; then
+            export GIT_AUTHOR_EMAIL="$ANON"
+            log "Author" "$GIT_AUTHOR_EMAIL -> $ANON"
+        fi
+
+        if [ "$GIT_COMMITER_EMAIL" = "$1" ]; then
+            export GIT_COMMITER_EMAIL="$ANON"
+            log "Commiter" "$GIT_COMMITER_EMAIL -> $ANON"
+        fi
+    }
+
+    replaceCommiters "j.honlet@evs.com"
+    replaceCommiters "jean.honlet@oniryx.be"
+    replaceCommiters "jehon@wsl.nsicorp.local"
+    replaceCommiters "jean.honlet@nsi-sa.be"
+    replaceCommiters "1582670+jehon@users.noreply.github.com"
+    replaceCommiters "jehon@jhn-hyperv.mshome.net"
+    replaceCommiters "jehon@localhost.net"
+    replaceCommiters "marielineetjean@gmail.com"
+    replaceCommiters "marielineet.jean@gmail.com"
+
+    replaceCommitDate() {
+    # 1: commit
+    # 2: date
+    # 3: old date
+
+    # git filter-branch --force --env-filter \
+    #     "if [ \$GIT_COMMIT = '$1' ]; then
+    #         export GIT_AUTHOR_DATE='$2'
+    #         export GIT_COMMITTER_DATE='$2'
     #     fi"
 }
 
-getListOfCommitsInWH() {
-    # output
-    #   7f9a3f894f1d503c4739d681222f2bf084452b7e 2021-04-22-09-05-06
-    LASTDAY=""
-    while read -r T ; do
-        # echo "$T"
-        [[ "$T" =~ ^([[:alnum:]]+)\ ([0-9]+)\ .*\ ([+-]([0-9]){4})$ ]]
-        # echo "${BASH_REMATCH[1]}"
-        # echo "${BASH_REMATCH[2]}"
-        # echo "${BASH_REMATCH[3]}"
+'
 
-        HASH="${BASH_REMATCH[1]}"
-        TS=${BASH_REMATCH[2]}
-        TZ=${BASH_REMATCH[3]}
-
-        if [[ "$TZ" != "+0100" ]] && [[ "$TZ" != "+0200" ]] && [[ "$TZ" != "+0000" ]]; then
-            echo "Skipping TZ: $TZ"
-            continue
-        fi
-
-        HR=$( date --date="@$TS" "+%F %H-%M-%S" )
-        WE=$( date --date="@$TS" "+%u" )
-        DAY=$( date --date="@$TS" "+%F" )
-        HOUR="$( date --date="@$TS" "+%H" )"
-        HOUR="${HOUR#0}"
-
-        if [ "$DAY" != "$LASTDAY" ]; then
-            # echo "* $DAY"
-            LASTDAY="$DAY"
-            LASTHOURSOURCE="$HOUR"
-            LASTHOURTARGET="17"
-            CNT="1"
-        fi
-
-        # echo "$HASH - $TS: $HR - ${WE}dow - ${HOUR}h (vs $LASTHOURSOURCE / $LASTHOURTARGET)"
-
-        if (( WE <= 5 && HOUR >= 8 )); then
-            # echo "- need shift"
-            (( NH = HOUR ))
-            ND="$DAY"
-            if (( HOUR > LASTHOURTARGET )) ; then
-                continue;
-            fi
-            if (( HOUR == LASTHOURTARGET && HOUR == LASTHOURSOURCE )); then
-                continue;
-            fi
-
-            if (( HOUR > LASTHOURSOURCE )) ; then
-#                    echo "- next hour"
-                    (( LASTHOURTARGET++ ))
-                    if (( LASTHOURTARGET > 23 )) ; then
-                        echo "Too much shift on $DAY $HR -> $CNT"
-                        NH="23-59-$( printf "%02d" ${CNT} )"
-                        (( CNT++ ))
-                        if (( CNT > 59 )) ; then
-                            echo "Too too much shift on $DAY: $CNT overflow"
-                            exit 1
-                            continue
-                        fi
-                    fi
-            fi
-            (( LASTHOURSOURCE = HOUR ))
-            (( NH = LASTHOURTARGET ))
-
-            if (( NH != HOUR )); then
-                NEW=$( date --date="@$TS" "+$NH-%M-%S" )
-                echo "$HASH $DAY: $HR -> $ND $NEW"
-                # $EXEC
-            fi
-        fi
-    done < <(  git log --all --reverse --full-history --format='%H %at %aD' )
-}
-
-# replaceCommiters "$ANON" "jehon@wsl.nsicorp.local"
-# replaceCommiters "$ANON" "1582670+jehon@users.noreply.github.com"
-# replaceCommiters "$ANON" "jean.honlet@oniryx.be"
-# replaceCommiters "$ANON" "jehon@jhn-hyperv.mshome.net"
-# replaceCommiters "$ANON" "jehon@localhost.net"
-# replaceCommiters "$ANON" "j.honlet@evs.com"
-# replaceCommiters "$ANON" "marielineetjean@gmail.com"
-# replaceCommiters "$ANON" "marielineet.jean@gmail.com"
-# getListOfCommiters
-
-getListOfCommitsInWH
+header "Remaining commiters: "
+git log --all --full-history --format='%ae %an' | sort | uniq
 
 ok "Done"
