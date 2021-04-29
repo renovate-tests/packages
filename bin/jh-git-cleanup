@@ -14,6 +14,7 @@ SWD="$(pwd)"
 export SWD
 
 git log > jh-git-cleanup.before.log
+rm -f jh-git-cleanup.debug.log
 
 FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --prune-empty --env-filter '
     #
@@ -30,20 +31,31 @@ FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --prune-empty --env-fi
 
     ANON="jehon@users.noreply.github.com"
 
+    fts() {
+        date --date="$1" "+%F %H:%M:%S $2"
+    }
+
     log() {
-        printf "$GIT_COMMIT | %-10s | %-35s | %-35s \n" "$1" "$2" "$3" >> $SWD/jh-git-cleanup.debug.log
+        printf "$GIT_COMMIT | %-15s | %-40s | %-40s | %s\n" "$1" "$2" "$3" "$4" >> $SWD/jh-git-cleanup.debug.log
+    }
+
+    debug() {
+        true
+        # log "$@"
     }
 
     replaceCommiters() {
         # 1: old email to be remplaced
         if [ "$GIT_AUTHOR_EMAIL" = "$1" ]; then
-            export GIT_AUTHOR_EMAIL="$ANON"
             log "Author" "$GIT_AUTHOR_EMAIL" "$ANON"
+            export GIT_AUTHOR_EMAIL="$ANON"
+            export GIT_AUTHOR_NAME="Jean Honlet"
         fi
 
-        if [ "$GIT_COMMITER_EMAIL" = "$1" ]; then
-            export GIT_COMMITER_EMAIL="$ANON"
-            log "Commiter" "$GIT_COMMITER_EMAIL" "$ANON"
+        if [ "$GIT_COMMITTER_EMAIL" = "$1" ]; then
+            log "Commiter" "$GIT_COMMITTER_EMAIL" "$ANON"
+            export GIT_COMMITTER_EMAIL="$ANON"
+            export GIT_COMMITTER_NAME="Jean Honlet"
         fi
     }
 
@@ -54,81 +66,68 @@ FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --prune-empty --env-fi
     replaceCommiters "1582670+jehon@users.noreply.github.com"
     replaceCommiters "jehon@jhn-hyperv.mshome.net"
     replaceCommiters "jehon@localhost.net"
+    replaceCommiters "jeanhonlet@gmail.com"
     replaceCommiters "marielineetjean@gmail.com"
     replaceCommiters "marielineet.jean@gmail.com"
 
     #
     # Check the dates
     #
+    #    Note: Epoch is 10 digits since Sun Sep 09 2001 01:46:39 GMT+0000 untill Sat Nov 20 2286 17:46:39 GMT+0000
+    #
 
-    TS="$( echo "$GIT_COMMITTER_DATE" | cut -d " " -f 1 )"
-    TZ="$( echo "$GIT_COMMITTER_DATE" | cut -d " " -f 2 )"
+    O_TS="$( echo "$GIT_COMMITTER_DATE" | cut -d " " -f 1 )" # format: @123456
 
-    HR=$( date --date="$TS" "+%F %H-%M-%S" )
-    WE=$( date --date="$TS" "+%u" )
-    DAY=$( date --date="$TS" "+%F" )
-    HOUR="$( date --date="$TS" "+%H" )"
-    HOUR="${HOUR#0}"
+    debug "o_ts / last" "$( fts "$O_TS" )" "$( fts "$LAST_TS")"
 
-    # log "test2" "$TS | $TZ | $HR | $WE | $DAY | $HOUR"
-
-    if [ "$TZ" != "+0100" ] && [ "$TZ" != "+0200" ] && [ "$TZ" != "+0000" ]; then
-        log "skipping" "$TZ ($DAY)"
+    O_TZ="$( echo "$GIT_COMMITTER_DATE" | cut -d " " -f 2 )"   # format: +200
+    if [ "$O_TZ" != "+0100" ] && [ "$O_TZ" != "+0200" ] && [ "$O_TZ" != "+0000" ]; then
+        log "Skip TZ" "$O_TZ $( fts "$O_TS" )"
         continue
     fi
 
-    if [ "$DAY" != "$LASTDAY" ]; then
-        LASTDAY="$DAY"
-        LASTHOURSOURCE="$HOUR"
-        LASTHOURTARGET="17"
-        CNT="1"
+    # Inferior limit (last_ts) = max(O_TS, LAST_TS
+    if expr "$LAST_TS" "<=" "$O_TS" > /dev/null; then
+        N_TS="$O_TS"
+    else
+        debug "ots < last" "$( fts "$O_TS" )" "$( date --date="$LAST_TS" "+%F %H:%M:%S")"
+        # LAST_TS + some seconds [10..30])
+        N_TS="@$( expr substr "$O_TS" 2 9999 + $( shuf -i 10-30 -n 1 ) )"
     fi
 
-    # echo "$HASH - $TS: $HR - ${WE}dow - ${HOUR}h (vs $LASTHOURSOURCE / $LASTHOURTARGET)"
+    N_WEEKDAY="$( date --date="$N_TS" "+%u" )" # 1: monday - 7: sunday
+    if [ "$N_WEEKDAY" -lt 6 ]; then
+        N_DAY="$( date --date="$N_TS" "+%F" )"
+        N_HOUR="$( date --date="$N_TS" "+%H" )"
+        if [ "$N_HOUR" -gt 8 ]; then
+            # Calculate the minimal
+            if [ "$GIT_COMMITTER_EMAIL" = "$ANON" ]; then
+                # New minimum for TS
 
-    if [ "$WE" -lt 6 ] && [ "$HOUR" -gt 8 ]; then
-        # echo "- need shift"
-        NH=HOUR
-        ND="$DAY"
-        if [ $HOUR -gt $LASTHOURTARGET ]; then
-            continue;
-        fi
-        if [ "$HOUR" = "$LASTHOURTARGET" ] && [ "$HOUR" = "$LASTHOURSOURCE" ]; then
-            continue;
-        fi
+                # TODO: a bit of random
 
-        if [ "$HOUR" -gt "$LASTHOURSOURCE" ]; then
-                #    echo "- next hour"
-                LASTHOURTARGET=$( expr $LASTHOURTARGET + 1)
-                if [ "$LASTHOURTARGET" -gt 23 ] ; then
-                    log "Too much shift on $DAY $HR -> $CNT"
-                    NH="23-59-$( printf "%02d" ${CNT} )"
-                    CNT=$( expr $CNT + 1 )
-                    if [ "$CNT" -gt 59 ]; then
-                        log "Too too much shift on $DAY: $CNT overflow"
-                        exit 1
-                        continue
-                    fi
+                AT_18="@$( date --date="$N_DAY 18:00:00" "+%s" )"
+                if expr "$AT_18" ">" "$N_TS" > /dev/null; then
+                    N_TS="$AT_18"
                 fi
-        fi
-
-        LASTHOURSOURCE="$HOUR"
-        NH="$LASTHOURTARGET"
-
-        if [ "$NH" != "$HOUR" ]; then
-            NEW="$ND $( date --date="$TS" "+$NH:%M:%S" ) $TZ"
-            log "Timestamp" "$HR" "$NEW"
-            export GIT_COMMITTER_DATE="$NEW"
-            export GIT_AUTHOR_DATE="$NEW"
+            fi
         fi
     fi
+
+    if [ "$N_TS" != "$O_TS" ]; then
+        log "Timestamp" "$( fts "$O_TS" )" "$( date --date="$N_TS" "+%F %H:%M:%S" )"
+        export GIT_COMMITTER_DATE="$N_TS $TZ"
+        export GIT_AUTHOR_DATE="$N_TS $TZ"
+    fi
+
+    LAST_TS="$N_TS"
 '
 header "Remaining commiters: "
-git log --all --full-history --format='%ae %an' | sort | uniq
+
+git log --format='%ae' | sort | uniq
+
+# cat jh-git-cleanup.debug.log
+git log > jh-git-cleanup.after.log
 
 ok "Done"
 
-cat jh-git-cleanup.debug.log
-git log > jh-git-cleanup.after.log
-
-diff -y jh-git-cleanup.before.log jh-git-cleanup.after.log | less
