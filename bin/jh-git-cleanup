@@ -103,9 +103,6 @@ FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --prune-empty --env-fi
             # Calculate the minimal
             if [ "$GIT_COMMITTER_EMAIL" = "$ANON" ]; then
                 # New minimum for TS
-
-                # TODO: a bit of random
-
                 AT_18="@$( date --date="$N_DAY 18:00:00" "+%s" )"
                 if expr "$AT_18" ">" "$N_TS" > /dev/null; then
                     N_TS="$AT_18"
