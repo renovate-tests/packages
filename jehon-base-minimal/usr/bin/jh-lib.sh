@@ -28,7 +28,7 @@ if [ "$JH_PKG_FOLDER" = "/" ]; then
 fi
 
 #
-# Get the config file location
+# Get the config file location (relative to /usr/share/jehon-base-minimal/)
 #
 #   /usr/(s)bin => $1
 #   ~/src/packages/... => packages/$JH_PKG_MINIMAL_NAME/usr/share/$JH_PKG_MINIMAL_NAME/etc/$(basename)
@@ -40,9 +40,31 @@ jhGetConfigFile() {
         return 0
     fi
 
-    CONF_DIR="$JH_PKG_FOLDER/$JH_PKG_MINIMAL_NAME/usr/share/$JH_PKG_MINIMAL_NAME/etc"
-    if [ -a "$CONF_DIR/$(basename "$1" )" ]; then
-        echo "$CONF_DIR/$(basename "$1" )"
+    CONF_DIR="$JH_PKG_FOLDER/$JH_PKG_MINIMAL_NAME/usr/share/$JH_PKG_MINIMAL_NAME"
+    if [ -a "${CONF_DIR}$1" ]; then
+        echo "${CONF_DIR}$1"
+        return 0
+    fi
+
+    echo "$1"
+    return 0
+}
+
+#
+# Get the shared file location (relative to ROOT/jehon-base-minimal)
+# ex: /usr/share/jehon/hyperv/
+#
+#
+jhGetSharedFile() {
+    if [ -z "$JH_PKG_FOLDER" ]; then
+        echo "$1"
+        return 0
+    fi
+
+    CONF_DIR="$JH_PKG_FOLDER/$JH_PKG_MINIMAL_NAME"
+
+    if [ -a "${CONF_DIR}$1" ]; then
+        echo "${CONF_DIR}$1"
         return 0
     fi
 

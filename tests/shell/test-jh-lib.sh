@@ -25,4 +25,8 @@ assert_equals "jhGetConfigFile from etc" \
     "/etc/host" \
     "$( jhGetConfigFile "/etc/host" )"
 
+assert_equals "jhGetSharedFile from share" \
+    "$JH_ROOT/jehon-base-minimal/usr/share/jehon/hyperv" \
+    "$( jhGetSharedFile "/usr/share/jehon/hyperv" )"
+
 assert_file_exists "/etc/hosts"
