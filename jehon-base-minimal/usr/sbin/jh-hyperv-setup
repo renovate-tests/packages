@@ -5,7 +5,7 @@ set -e
 # shellcheck source=../bin/jh-lib.sh
 . jh-lib.sh
 
-HV_ROOT="/usr/share/jehon/hyperv"
+HV_ROOT="$( jhGetSharedFile "/usr/share/jehon/hyperv" )"
 
 if [ ! -w /dev/sda1 ]; then
     echo "You should be root to run this script" >&2
@@ -35,5 +35,11 @@ header "Configuring the network"
 inst $HV_ROOT/netplan-hyperv.yaml /etc/netplan/80-hyperv.yaml
 netplan apply
 echo ""
+
+header "Create the samba share"
+jh-patch-file "$HV_ROOT/samba.conf"
+service smbd restart
+ufw allow from 192.168.100.0/24 to any app Samba
+ufw reload
 
 header "Done"
