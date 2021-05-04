@@ -11,6 +11,8 @@ if jh-in-wsl ; then
 fi
 
 echo "*** Firewall: adapting"
+# Wait for xtable lock to be available
+iptables -L -n --wait > /dev/null
 ufw allow ssh
 ufw allow OpenSSH
 ufw --force enable

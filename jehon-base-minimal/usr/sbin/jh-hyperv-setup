@@ -27,19 +27,25 @@ inst() {
 # Set the screen size
 
 header "Configuring grub"
-inst $HV_ROOT/grub-hyperv.cfg /etc/default/grub.d/80-hyperv.cfg
+inst "$HV_ROOT"/grub-hyperv.cfg /etc/default/grub.d/80-hyperv.cfg
 update-grub
 echo ""
 
 header "Configuring the network"
-inst $HV_ROOT/netplan-hyperv.yaml /etc/netplan/80-hyperv.yaml
+inst "$HV_ROOT"/netplan-hyperv.yaml /etc/netplan/80-hyperv.yaml
 netplan apply
 echo ""
 
 header "Create the samba share"
+header "- Configure service"
 jh-patch-file "$HV_ROOT/samba.conf"
 service smbd restart
+header "- UFW: Waiting for lock"
+# Wait for xtable lock to be available
+iptables -L -n --wait > /dev/null
+header "- UFW: Enable samba"
 ufw allow from 192.168.100.0/24 to any app Samba
+header "- UFW: reload"
 ufw reload
 
 header "Done"

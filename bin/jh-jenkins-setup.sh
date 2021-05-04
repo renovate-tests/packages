@@ -10,6 +10,8 @@ chown -R jenkins /var/backups/jenkins
 usermod -a -G docker jenkins
 
 # Allow http access
+# Wait for xtable lock to be available
+iptables -L -n --wait > /dev/null
 ufw allow Jenkins
 
 #
