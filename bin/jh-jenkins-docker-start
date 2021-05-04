@@ -70,4 +70,10 @@ docker run --restart unless-stopped --name jenkins \
 
 #    --add-host="host.docker.internal:$REVERSE_IP" \
 
+while ! nc -vz 127.0.0.1 $WEB ; do
+    header "Waiting for service to be up..."
+    sleep 1s
+done
+
+header "*** Service is up and running! ***"
 docker logs --follow jenkins
