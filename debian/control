@@ -19,8 +19,6 @@ Package: jehon-base-minimal
 Architecture: all
 Pre-Depends: ${misc:Pre-Depends}
 	dpkg (>= 1.17.14)
-Provides: jehon-base-repositories, jehon-env-home
-Conflicts: jehon-base-repositories, jehon-env-home
 Depends: ${misc:Depends},
 	debconf, sed,
 	bash,
@@ -85,10 +83,8 @@ Description:
 Package: jehon-env-desktop
 Architecture: all
 Pre-Depends: ${misc:Pre-Depends}
-Provides: jehon-system-private
-Conflicts: jehon-system-private
 Depends: ${misc:Depends}
-	jehon-base-thirdparties,
+	jehon-base-minimal,
 	git-cola,
 	xclip,
 	gparted,
