@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # shellcheck source=/dev/null
-. jh-lib.sh
+. jh-lib
 
 set -e
 

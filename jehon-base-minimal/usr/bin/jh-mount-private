@@ -3,7 +3,7 @@
 set -e
 
 # shellcheck source=/dev/null
-. jh-lib.sh
+. jh-lib
 
 CRYPTED_SOURCE="${HOME}/.restricted"
 CRYPTED_MOUNTED="${HOME}/Desktop/Private"

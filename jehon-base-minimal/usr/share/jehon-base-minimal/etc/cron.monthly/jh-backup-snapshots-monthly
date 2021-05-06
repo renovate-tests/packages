@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # shellcheck source=/dev/null
-. jh-lib.sh
+. jh-lib
 
 if [ ! -t 1 ] ; then
 	exec > >(systemd-cat -t "$(realpath "$0")" -p info ) \

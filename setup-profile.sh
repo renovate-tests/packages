@@ -2,14 +2,14 @@
 
 # set -e
 
-# We need to calculate it us-self to be able to import jh-lib.sh
+# We need to calculate it us-self to be able to import jh-lib
 JH_SWD="$( realpath "$( dirname "${BASH_SOURCE[0]}" )" )"
 
 #
 # Will define JH_PKG_FOLDER
 #
 # shellcheck source=/dev/null
-. "$JH_SWD/jehon-base-minimal/usr/bin/jh-lib.sh"
+. "$JH_SWD/jehon-base-minimal/usr/bin/jh-lib"
 
 #
 # Look for the files locally

@@ -2,8 +2,8 @@
 
 set -e
 
-# shellcheck source=../jehon-base-minimal/usr/bin/jh-lib.sh
-. jh-lib.sh
+# shellcheck source=../jehon-base-minimal/usr/bin/jh-lib
+. jh-lib
 
 # See https://www.jenkins.io/doc/book/installing/docker/
 

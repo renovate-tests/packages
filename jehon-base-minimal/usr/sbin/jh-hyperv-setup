@@ -2,8 +2,8 @@
 
 set -e
 
-# shellcheck source=../bin/jh-lib.sh
-. jh-lib.sh
+# shellcheck source=../bin/jh-lib
+. jh-lib
 
 HV_ROOT="$( jhGetSharedFile "/usr/share/jehon/hyperv" )"
 

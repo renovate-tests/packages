@@ -3,7 +3,7 @@
 set -e
 
 # shellcheck source=/dev/null
-. jh-lib.sh
+. jh-lib
 
 # shellcheck source=/dev/null
 . jh-git-status.sh || true

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# shellcheck source=../jehon-base-minimal/usr/bin/jh-lib.sh
-. jh-lib.sh
+# shellcheck source=../jehon-base-minimal/usr/bin/jh-lib
+. jh-lib
 
 set -e
 

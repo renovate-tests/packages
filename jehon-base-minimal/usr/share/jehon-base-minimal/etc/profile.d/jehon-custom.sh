@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# shellcheck source=../../../../bin/jh-lib.sh
-. jh-lib.sh
+# shellcheck source=../../../../bin/jh-lib
+. jh-lib
 
 # For pip (python) local install
 if [ -x /home/jehon/.local/bin ]; then

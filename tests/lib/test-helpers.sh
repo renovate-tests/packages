@@ -6,10 +6,10 @@ set -e
 JH_ROOT="$(dirname "$( dirname "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" )" )"
 export JH_ROOT
 
-# shellcheck source=../../jehon-base-minimal/usr/bin/jh-lib.sh
-. "$JH_ROOT/jehon-base-minimal/usr/bin/jh-lib.sh"
+# shellcheck source=../../jehon-base-minimal/usr/bin/jh-lib
+. "$JH_ROOT/jehon-base-minimal/usr/bin/jh-lib"
 
-# TODO: use jh-lib.sh and factorized facilities
+# TODO: use jh-lib and factorized facilities
 
 JH_TMP="$JH_ROOT/tmp"
 mkdir -p "$JH_TMP"

@@ -3,7 +3,7 @@
 set -e
 
 # shellcheck source=/dev/null
-. jh-lib.sh
+. jh-lib
 
 PAD_HEADER=25
 

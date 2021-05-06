@@ -7,8 +7,8 @@ set -e
 #
 
 
-# shellcheck source=../jehon-base-minimal/usr/bin/jh-lib.sh
-. jh-lib.sh
+# shellcheck source=../jehon-base-minimal/usr/bin/jh-lib
+. jh-lib
 
 SWD="$(pwd)"
 export SWD
