@@ -78,3 +78,4 @@ ensure_snap_installed "code" classic
 ensure_snap_installed "mkvtoolnix-jz"
 # ensure_snap_installed "go" classic
 ensure_snap_installed "wifi-ap"
+ensure_snap_installed "docker"

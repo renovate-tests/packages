@@ -60,15 +60,15 @@ EOT
 #
 # host.docker.internal: https://stackoverflow.com/q/31324981/1954789
 #
+# REVERSE_IP="host-gateway" ?
 
 docker run --restart unless-stopped --name jenkins \
     -p $WEB:8080 \
     -p 2022:2022 \
     --detach \
-    --add-host=host.docker.internal:host-gateway \
+    --add-host="host.docker.internal:$REVERSE_IP" \
     jehon/jenkins
 
-#    --add-host="host.docker.internal:$REVERSE_IP" \
 
 while ! nc -vz 127.0.0.1 $WEB ; do
     header "Waiting for service to be up..."
