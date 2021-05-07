@@ -106,7 +106,7 @@ JH_MSG_KO="$(echo -e "\033[01;31m✗\033[0m" )"
 
 ok() {
     if test -t 1 ; then
-    	echo "$JH_MSG_OK $*"
+    	echo -e "$JH_MSG_OK $*"
     else
         echo "✓ $*"
     fi
@@ -114,7 +114,7 @@ ok() {
 
 ko() {
     if test -t 1 ; then
-    	echo "$JH_MSG_KO $*"
+    	echo -e "$JH_MSG_KO $*"
     else
         echo "✗ $*"
     fi
