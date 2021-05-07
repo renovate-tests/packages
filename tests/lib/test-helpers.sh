@@ -35,7 +35,7 @@ relative_to_root() {
 }
 
 # Create a "3"rd out where all structured messages will go
-# This allow us to capture stdout and stderr everywhere,
+# This allow us to test_capture stdout and stderr everywhere,
 # while still letting passing through the messages "Success / failure / ..."
 exec 3>&2
 
@@ -79,9 +79,9 @@ log_success() {
 #
 log_failure() {
     (
-		if [ -n "$JH_CAPTURED_OUTPUT" ]; then
+		if [ -n "$JH_TEST_CAPTURED_OUTPUT" ]; then
         	echo "*** Captured output begin ***"
-        	echo -e "$JH_CAPTURED_OUTPUT"
+        	echo -e "$JH_TEST_CAPTURED_OUTPUT"
         	echo "*** Captured output end ***"
 		fi
         echo -e "\e[1;31m\xE2\x9C\x98\e[1;00m Test '\e[1;33m$1\e[00m' failure: \e[1;31m$2\e[1;00m"
@@ -137,35 +137,38 @@ assert_file_exists() {
 }
 
 assert_success() {
-	capture "$@"
+	test_capture "$@"
 	assert_captured_success ""
 }
 
-capture() {
+test_capture() {
 	CAPTURED_HEADER="$1"
-    JH_CAPTURED_OUTPUT=""
-	JH_CAPTURED_EXITCODE=0
+    JH_TEST_CAPTURED_OUTPUT=""
+	JH_TEST_CAPTURED_EXITCODE=0
 	shift
 
 	if [ -z "$1" ]; then
-		echo "Usage: capture <header> <command> <arg>+ "
+		echo "Usage: test_capture <header> <command> <arg>+ "
 		exit 255
 	fi
 
-    JH_CAPTURED_OUTPUT="$( "$@" 2>&1 )" || JH_CAPTURED_EXITCODE="$?" || true
+	set +e
+    JH_TEST_CAPTURED_OUTPUT="$( "$@" 2>&1 )"
+	JH_TEST_CAPTURED_EXITCODE="$?"
+	set -e
 
     log_debug ""
 	return 0
 }
 
-capture_file() {
-	capture "$1" cat "$2"
+test_capture_file() {
+	test_capture "$1" cat "$2"
 }
 
-capture_empty() {
+test_capture_empty() {
 	CAPTURED_HEADER=""
-    JH_CAPTURED_OUTPUT=""
-	JH_CAPTURED_EXITCODE=0
+    JH_TEST_CAPTURED_OUTPUT=""
+	JH_TEST_CAPTURED_EXITCODE=0
 }
 
 assert_captured_output_contains() {
@@ -192,7 +195,7 @@ assert_captured_output_contains() {
             LINE="[  ] $R" >&3
         fi
         log_debug "$LINE"
-	done < <(echo -e "$JH_CAPTURED_OUTPUT")
+	done < <(echo -e "$JH_TEST_CAPTURED_OUTPUT")
 	IFS="$BACKUP_IFS"
     log_debug ""
 
@@ -204,16 +207,16 @@ assert_captured_output_contains() {
 }
 
 assert_captured_success() {
-    if [[ $JH_CAPTURED_EXITCODE -gt 0 ]]; then
-        log_failure "$CAPTURED_HEADER: $1" "command return $JH_CAPTURED_EXITCODE"
+    if [[ $JH_TEST_CAPTURED_EXITCODE -gt 0 ]]; then
+        log_failure "$CAPTURED_HEADER: $1" "command return $JH_TEST_CAPTURED_EXITCODE"
 		return "$RES"
     fi
     log_success "$CAPTURED_HEADER: $1"
 }
 
 assert_captured_failure() {
-    if [[ $JH_CAPTURED_EXITCODE -eq 0 ]]; then
-        log_failure "$CAPTURED_HEADER: $1" "command return $JH_CAPTURED_EXITCODE (success)"
+    if [[ $JH_TEST_CAPTURED_EXITCODE -eq 0 ]]; then
+        log_failure "$CAPTURED_HEADER: $1" "command return $JH_TEST_CAPTURED_EXITCODE (success)"
 		return "$RES"
     fi
     log_success "$CAPTURED_HEADER: $1"
@@ -224,7 +227,7 @@ capture_dump_to_file() {
 		log_error "[capture_dump_to_file] Specify file as [1]"
 		exit 255
 	fi
-	echo -e "$JH_CAPTURED_OUTPUT" > "$1"
+	echo -e "$JH_TEST_CAPTURED_OUTPUT" > "$1"
 }
 
 #

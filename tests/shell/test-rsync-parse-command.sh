@@ -17,16 +17,16 @@ export TS="mytimestamp"
 export KEY="mykey"
 
 checkShouldFail() {
-    capture "$1" parseCommand "$CFG" "$2"
+    test_capture "$1" parseCommand "$CFG" "$2"
     assert_captured_failure "Should exit when running: $2"
-    capture_empty
+    test_capture_empty
 }
 
 checkMatch() {
     # $: name of test
     # $: source command
     # $: target command
-    capture "$1" parseCommand "$CFG" "$2"
+    test_capture "$1" parseCommand "$CFG" "$2"
     assert_captured_success "Should succeed: $1 with '$2'" "$?"
 
     N=$(parseCommand "$CFG" "$2")

@@ -26,24 +26,24 @@ cat <<-EOF >"$PATCH"
 	Hello world
 EOF
 
-capture "jh-patch-file-patch" "$JH_ROOT"/jehon-base-minimal/usr/bin/jh-patch-file "$PATCH"
+test_capture "jh-patch-file-patch" "$JH_ROOT"/jehon-base-minimal/usr/bin/jh-patch-file "$PATCH"
 assert_captured_success "should be successfull"
 
-capture "jh-patch-file-patch read" cat "$TARGET"
+test_capture "jh-patch-file-patch read" cat "$TARGET"
 assert_captured_output_contains "Tag:[[:space:]]+test"
 assert_captured_output_contains "File:[[:space:]]+$TARGET"
-capture_empty
+test_capture_empty
 assert_true "The backup file $BACKUP exists" "$([[ -r "$BACKUP" ]])"
 
-capture_file "read the generated file" "$TARGET"
+test_capture_file "read the generated file" "$TARGET"
 assert_captured_output_contains "This is the file"
 assert_captured_output_contains "Hello world"
-capture_empty
+test_capture_empty
 
-capture "jh-patch-file-patch" $JH_ROOT/jehon-base-minimal/usr/bin/jh-patch-file "uninstall" "$TARGET" "test"
+test_capture "jh-patch-file-patch" $JH_ROOT/jehon-base-minimal/usr/bin/jh-patch-file "uninstall" "$TARGET" "test"
 assert_captured_success "should be successfull"
 
-capture_file "read the generated file" "$TARGET"
+test_capture_file "read the generated file" "$TARGET"
 assert_captured_output_contains "This is the file"
 assert_true "Should not contain patch" "$([[ $(cat "$TARGET" | grep "Hello world") = "" ]])"
-capture_empty
+test_capture_empty
