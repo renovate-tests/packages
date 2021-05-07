@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+
+export JH_RUN_CAPTURED_OUTPUT=""
+export JH_RUN_CAPTURED_EXITCODE=0
+
+if [ -z "$1" ]; then
+    echo "Usage: test_capture <command> [args]+"
+    exit 255
+fi
+
+set +e
+JH_RUN_CAPTURED_OUTPUT="$( "$@" 2>&1 )"
+JH_RUN_CAPTURED_EXITCODE="$?"
+set -e
+
+if [[ $JH_RUN_CAPTURED_EXITCODE -gt 0 ]]; then
+    echo "$JH_RUN_CAPTURED_OUTPUT" >&2
+    echo "Exit code: $JH_RUN_CAPTURED_EXITCODE" >&2
+    exit $JH_RUN_CAPTURED_EXITCODE;
+fi
+
+true
